@@ -47,6 +47,8 @@ package com.learning.taskmanager.Service;
 import com.learning.taskmanager.Dto.TaskDTO;
 import com.learning.taskmanager.Entity.Task;
 import com.learning.taskmanager.Repository.TaskRepository;
+import com.learning.taskmanager.Entity.User;
+import com.learning.taskmanager.Repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,6 +63,9 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public Task createTask(TaskDTO dto) {
 
         String username = SecurityContextHolder
@@ -68,23 +73,27 @@ public class TaskService {
                 .getAuthentication()
                 .getName();
 
-        // TEMPORARY logic
-        // Until you fetch userId from DB
-        Long userId = 1L;
+        User user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("User not found"));
 
         Task task = new Task();
-
         task.setTitle(dto.title);
         task.setDescription(dto.description);
         task.setStatus(dto.status);
         task.setCreatedAt(LocalDateTime.now());
+        task.setUser(user);
 
-        task.setUserId(userId);
 
         return taskRepository.save(task);
     }
 
-    public List<Task> getTasks(Long userId) {
-        return taskRepository.findByUserId(userId);
-    }
+    public List<Task> getTasks() {
+
+    String username = SecurityContextHolder
+            .getContext()
+            .getAuthentication()
+            .getName();
+
+    return taskRepository.findByUserUsername(username);
+}
 }

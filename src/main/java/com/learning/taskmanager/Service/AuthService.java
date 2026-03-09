@@ -18,13 +18,18 @@ public class AuthService {
     private UserRepository userRepository;
 
     @Autowired
+    private RefreshTokenService RefreshTokenService;
+
+    @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     @Autowired
     private JwtUtil jwtUtil;
+
 
     public void register(RegisterRequest request) {
 
@@ -46,12 +51,36 @@ public class AuthService {
         if (!passwordEncoder.matches(request.password, user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
-
+        
+        //JWT access token generated
         String token = jwtUtil.generateToken(user.getUsername());
+
+        RefreshToken refreshToken = RefreshTokenService.createRefreshToken(user);
 
         AuthResponse response = new AuthResponse();
         response.accessToken = token;
+        response.refreshToken = refreshToken.getToken();
 
         return response;
     }
+    public AuthResponse refreshToken(RefreshTokenRequest request) {
+
+    String requestToken = request.getRefreshToken();
+
+    RefreshToken refreshToken = RefreshTokenService
+            .findByToken(requestToken)
+            .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+
+    RefreshTokenService.verifyExpiration(refreshToken);
+
+    User user = refreshToken.getUser();
+
+    String newAccessToken = jwtUtil.generateToken(user.getUsername());
+
+    AuthResponse response = new AuthResponse();
+    response.accessToken = newAccessToken;
+    response.refreshToken = refreshToken.getToken();
+
+    return response;
+}
 }

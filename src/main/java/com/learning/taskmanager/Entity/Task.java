@@ -19,7 +19,10 @@ public class Task {
 
     private LocalDateTime createdAt; // to track when the task was created
 
-    private Long userId;    // (foreign key) to associate the task with a specific user 
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Task() {}
 
@@ -59,11 +62,11 @@ public class Task {
         this.createdAt = createdAt;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

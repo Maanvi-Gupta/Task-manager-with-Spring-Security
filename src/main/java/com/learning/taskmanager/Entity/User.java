@@ -26,7 +26,9 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "role_id")  // intermediate table to manage the many-to-many relationship 
     )
     private Set<Role> roles;
-
+    
+    @OneToMany(mappedBy = "user")
+    private Set<Task> tasks;
     public User() {}
 
     public Long getId() {

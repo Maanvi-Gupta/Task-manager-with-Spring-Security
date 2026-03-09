@@ -2,6 +2,13 @@ package com.learning.taskmanager.Dto;
 
 public class RefreshTokenRequest {
 
-    public String refreshToken;
+    private String refreshToken;
 
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }
