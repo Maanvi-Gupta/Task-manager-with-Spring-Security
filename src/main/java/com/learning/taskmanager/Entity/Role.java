@@ -29,9 +29,8 @@ public class Role {
         return name;   // candidate key to uniquely identify a role
     }
     
-    public String setName(String name)
+    public void setName(String name)
     {
         this.name = name;
-        return name;
     } 
 }

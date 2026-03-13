@@ -77,6 +77,7 @@ public class TaskService {
         .orElseThrow(() -> new RuntimeException("User not found"));
 
         Task task = new Task();
+        
         task.setTitle(dto.title);
         task.setDescription(dto.description);
         task.setStatus(dto.status);

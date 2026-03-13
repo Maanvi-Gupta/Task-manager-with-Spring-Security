@@ -3,8 +3,7 @@ package com.learning.taskmanager.Service;
 import com.learning.taskmanager.Entity.RefreshToken;
 import com.learning.taskmanager.Repository.RefreshTokenRepository;
 import com.learning.taskmanager.Entity.User;
-// 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;   
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -19,7 +18,7 @@ public class RefreshTokenService {
     private RefreshTokenRepository refreshTokenRepository;
 
 
-    // refresh token validity = 7 days
+    // refresh token validity = 7 days 
     private final long refreshTokenDurationDays = 7;
 
     // create refresh token

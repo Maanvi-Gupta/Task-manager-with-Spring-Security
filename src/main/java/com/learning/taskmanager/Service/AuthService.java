@@ -21,20 +21,22 @@ public class AuthService {
     private RefreshTokenService RefreshTokenService;
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleRepository RoleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+    
     @Autowired
     private JwtUtil jwtUtil;
 
 
     public void register(RegisterRequest request) {
 
-        Role role = roleRepository.findByName("ROLE_USER").orElseThrow();
-
+    Role role = RoleRepository
+                .findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+                
         User user = new User();
         user.setUsername(request.username);
         user.setEmail(request.email);
